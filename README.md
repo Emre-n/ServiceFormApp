@@ -33,10 +33,6 @@ The repository includes:
 - `PDF Templates`: Example output PDFs generated from service forms.
 - `Signature Files`: Uploaded technician signatures used in PDF generation.
 
-## 🖼️ Screenshots
-
-_Add your admin panel, form page, and example PDF screenshots here._
-
 ## 👨‍💻 Author
 
 - **Emre Atcı**  
