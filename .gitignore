@@ -1,0 +1,14 @@
+[Bb]in/
+[Oo]bj/
+.vs/
+*.user
+*.suo
+*.bak
+*.log
+*.pdb
+*.dbmdl
+_ReSharper*/
+*.ncrunch*
+*.localhistory
+*.sln.docstates
+.DS_Store
