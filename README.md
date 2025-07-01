@@ -40,10 +40,5 @@ _Add your admin panel, form page, and example PDF screenshots here._
 ## 👨‍💻 Author
 
 - **Emre Atcı**  
-- [GitHub](https://github.com/Emre-n)
-
-## ✅ Setup Instructions
-
-1️⃣ Clone the repository:
-```bash
-git clone https://github.com/Emre-n/ServiceFormApp.git
+- [GitHub](https://github.com/Emre-n)  
+- [LinkedIn](https://www.linkedin.com/in/emre-atc%C4%B1-002b75237?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=ios_app)
