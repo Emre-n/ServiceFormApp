@@ -1,0 +1,214 @@
+﻿@model PagedList.IPagedList<Fornet.Models.ServiceForms>
+@using PagedList.Mvc;
+
+@{
+    ViewBag.Title = "Admin Panel - Servis Formları";
+    Layout = "~/Views/Shared/_LayoutYonetici.cshtml";
+}
+
+<!-- ✅ Bildirimler -->
+@if (TempData["SuccessMessage"] != null)
+{
+    <div class="alert alert-success text-center">@TempData["SuccessMessage"]</div>
+}
+@if (TempData["Error"] != null)
+{
+    <div class="alert alert-danger text-center">@TempData["Error"]</div>
+}
+
+<div class="container mt-4">
+    <h2 class="text-center mb-4">🛠 Servis Formları Yönetimi</h2>
+
+    <!-- 📅 Tarih Filtresi -->
+    <form method="get" class="row g-3 mb-4">
+        <div class="col-md-4">
+            <label for="startDate" class="form-label">Başlangıç Tarihi</label>
+            <input type="date" name="startDate" id="startDate" class="form-control" value="@ViewBag.StartDate" />
+        </div>
+        <div class="col-md-4">
+            <label for="endDate" class="form-label">Bitiş Tarihi</label>
+            <input type="date" name="endDate" id="endDate" class="form-control" value="@ViewBag.EndDate" />
+        </div>
+        <div class="col-md-4 d-flex align-items-end">
+            <button type="submit" class="btn btn-primary w-100">Filtrele</button>
+        </div>
+    </form>
+
+    <!-- 📋 Formlar Tablosu -->
+    <div class="table-responsive shadow-sm bg-white p-3 rounded">
+        <table class="table table-bordered table-hover align-middle">
+            <thead class="table-dark text-center">
+                <tr>
+                    <th>#</th>
+                    <th>Helpdesk ID</th>
+                    <th>Mağaza</th>
+                    <th>Teknisyen</th>
+                    <th>Geliş Tarihi</th>
+                    <th>Durum</th>
+                    <th>İşlemler</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td class="text-center">@item.Id</td>
+                        <td>@item.HelpdeskId</td>
+                        <td>@item.Site</td>
+                        <td>@item.Technician</td>
+                        <td>@item.ArrivalDateTime?.ToString("dd.MM.yyyy HH:mm")</td>
+                        <td class="text-center">
+                            @switch (item.Durum)
+                            {
+                                case 1:
+                                    @:<span class="badge bg-success">Onaylandı</span>
+                                    break;
+                                case 2:
+                                    @:<span class="badge bg-danger">Reddedildi</span>
+                                    break;
+                                default:
+                                    @:<span class="badge bg-warning text-dark">Bekliyor</span>
+                                    break;
+                            }
+                        </td>
+                        <td class="text-center">
+                            <a href="@Url.Action("FormDetay", "Admin", new { id = item.Id })" class="btn btn-sm btn-info mb-1">Detay</a>
+                            <a href="@Url.Action("IndirPdf", "Admin", new { id = item.Id })" class="btn btn-sm btn-secondary mb-1">PDF</a>
+                            <a href="@Url.Action("FormGuncelle", "Admin", new { id = item.Id })" class="btn btn-sm btn-warning mb-1">Düzenle</a>
+
+                            <!-- ✅ Modal Tetikleyici -->
+                            <button class="btn btn-sm btn-success mb-1" data-bs-toggle="modal" data-bs-target="#onayModal" data-id="@item.Id">Onayla</button>
+
+                            <!-- ❌ Reddet Modal -->
+                            <button class="btn btn-sm btn-danger mb-1" data-bs-toggle="modal" data-bs-target="#reddetModal" data-id="@item.Id">Reddet</button>
+
+                            <!-- 🗑️ Sil Modal -->
+                            <button class="btn btn-sm btn-dark mb-1" data-bs-toggle="modal" data-bs-target="#silModal" data-id="@item.Id">Sil</button>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+
+        <!-- 📄 Sayfalama -->
+        @if (Model.PageCount > 1)
+        {
+            <nav class="mt-4" aria-label="Sayfalama">
+                <ul class="pagination justify-content-center">
+                    @if (Model.HasPreviousPage)
+                    {
+                        <li class="page-item">
+                            <a class="page-link" href="@Url.Action("Index", new { page = Model.PageNumber - 1, startDate = ViewBag.StartDate, endDate = ViewBag.EndDate })">«</a>
+                        </li>
+                    }
+                    else
+                    {
+                        <li class="page-item disabled"><span class="page-link">«</span></li>
+                    }
+
+                    @for (int i = 1; i <= Model.PageCount; i++)
+                    {
+                        <li class="page-item @(i == Model.PageNumber ? "active" : "")">
+                            <a class="page-link" href="@Url.Action("Index", new { page = i, startDate = ViewBag.StartDate, endDate = ViewBag.EndDate })">@i</a>
+                        </li>
+                    }
+
+                    @if (Model.HasNextPage)
+                    {
+                        <li class="page-item">
+                            <a class="page-link" href="@Url.Action("Index", new { page = Model.PageNumber + 1, startDate = ViewBag.StartDate, endDate = ViewBag.EndDate })">»</a>
+                        </li>
+                    }
+                    else
+                    {
+                        <li class="page-item disabled"><span class="page-link">»</span></li>
+                    }
+                </ul>
+            </nav>
+        }
+    </div>
+</div>
+
+<!-- ✅ Onay Modal -->
+<div class="modal fade" id="onayModal" tabindex="-1" aria-labelledby="onayModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <form method="post" action="@Url.Action("Onayla", "Admin")">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="onayModalLabel">Formu Onayla ve Gönder</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Kapat"></button>
+                </div>
+                <div class="modal-body">
+                    Bu formu onaylayıp PDF olarak mağazaya e-posta göndermek istediğinizden emin misiniz?
+                    <input type="hidden" name="id" id="formIdToApprove" />
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Vazgeç</button>
+                    <button type="submit" class="btn btn-success">Evet, Onayla</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- ❌ Reddet Modal -->
+<div class="modal fade" id="reddetModal" tabindex="-1" aria-labelledby="reddetModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <form method="post" action="@Url.Action("Reddet", "Admin")">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="reddetModalLabel">Formu Reddet</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Kapat"></button>
+                </div>
+                <div class="modal-body">
+                    Bu formu reddetmek istediğinize emin misiniz?
+                    <input type="hidden" name="id" id="formIdToReject" />
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Vazgeç</button>
+                    <button type="submit" class="btn btn-danger">Evet, Reddet</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- 🗑️ Sil Modal -->
+<div class="modal fade" id="silModal" tabindex="-1" aria-labelledby="silModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <form method="post" action="@Url.Action("Sil", "Admin")">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="silModalLabel">Formu Sil</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Kapat"></button>
+                </div>
+                <div class="modal-body">
+                    Bu formu silmek istediğinize emin misiniz? Bu işlem geri alınamaz!
+                    <input type="hidden" name="id" id="formIdToDelete" />
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Vazgeç</button>
+                    <button type="submit" class="btn btn-dark">Evet, Sil</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- 🧠 Modal ID Aktarıcı -->
+<script>
+    const modals = [
+        { id: 'onayModal', inputId: 'formIdToApprove' },
+        { id: 'reddetModal', inputId: 'formIdToReject' },
+        { id: 'silModal', inputId: 'formIdToDelete' }
+    ];
+
+    modals.forEach(({ id, inputId }) => {
+        const modal = document.getElementById(id);
+        modal.addEventListener('show.bs.modal', function (event) {
+            const button = event.relatedTarget;
+            const formId = button.getAttribute('data-id');
+            modal.querySelector(`#${inputId}`).value = formId;
+        });
+    });
+</script>

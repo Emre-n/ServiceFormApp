@@ -1,0 +1,569 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="FornetDBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Birimler">
+          <Key>
+            <PropertyRef Name="birimId" />
+          </Key>
+          <Property Name="birimId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="birimAd" Type="nvarchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="Category">
+          <Key>
+            <PropertyRef Name="categoryId" />
+          </Key>
+          <Property Name="categoryId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="categoryIsmi" Type="nvarchar" MaxLength="50" />
+          <Property Name="categorySet" Type="int" />
+        </EntityType>
+        <EntityType Name="Items">
+          <Key>
+            <PropertyRef Name="itemId" />
+          </Key>
+          <Property Name="itemId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="itemSet" Type="int" />
+          <Property Name="itemName" Type="nvarchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="Magazalar">
+          <Key>
+            <PropertyRef Name="StoreId" />
+          </Key>
+          <Property Name="StoreId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="StoreSet" Type="int" />
+          <Property Name="StoreCode" Type="int" />
+          <Property Name="StoreName" Type="varchar" MaxLength="255" />
+          <Property Name="Adress" Type="varchar" MaxLength="255" />
+          <Property Name="City" Type="nvarchar" MaxLength="50" />
+          <Property Name="District" Type="nvarchar" MaxLength="50" />
+          <Property Name="Phone" Type="nvarchar" MaxLength="50" />
+          <Property Name="Email" Type="nvarchar" MaxLength="50" />
+          <Property Name="DateCreated" Type="nvarchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="Markalar">
+          <Key>
+            <PropertyRef Name="markaId" />
+          </Key>
+          <Property Name="markaId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="markaIsım" Type="nvarchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="Personeller">
+          <Key>
+            <PropertyRef Name="personelId" />
+          </Key>
+          <Property Name="personelId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="personelAdSoyad" Type="nvarchar" MaxLength="50" />
+          <Property Name="personelKullaniciAd" Type="nvarchar" MaxLength="50" />
+          <Property Name="personelParola" Type="nvarchar" MaxLength="100" />
+          <Property Name="personelBirimId" Type="int" />
+          <Property Name="personelYetkiTurId" Type="int" />
+          <Property Name="personelImza" Type="image" />
+        </EntityType>
+        <EntityType Name="ServiceForms">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="HelpdeskId" Type="nvarchar" MaxLength="50" />
+          <Property Name="IncNumber" Type="nvarchar" MaxLength="50" />
+          <Property Name="ServiceType" Type="nvarchar" MaxLength="100" />
+          <Property Name="Site" Type="nvarchar" MaxLength="100" />
+          <Property Name="StoreSelect" Type="nvarchar" MaxLength="100" />
+          <Property Name="CategoryId" Type="int" />
+          <Property Name="SubcategoryId" Type="int" />
+          <Property Name="Items" Type="nvarchar(max)" />
+          <Property Name="VendorSR" Type="nvarchar" MaxLength="50" />
+          <Property Name="ArrivalDateTime" Type="datetime" />
+          <Property Name="DepartureDateTime" Type="datetime" />
+          <Property Name="Technician" Type="nvarchar" MaxLength="100" />
+          <Property Name="SignatureData" Type="nvarchar(max)" />
+          <Property Name="SupportPersonName" Type="nvarchar" MaxLength="100" />
+          <Property Name="FormDetails" Type="nvarchar" MaxLength="500" />
+          <Property Name="CreatedAt" Type="datetime" />
+          <Property Name="Durum" Type="int" />
+          <Property Name="TechnicianSignatureFileName" Type="nvarchar" MaxLength="100" />
+          <Property Name="Adress" Type="nvarchar" MaxLength="250" />
+          <Property Name="CityDistrict" Type="nvarchar" MaxLength="100" />
+        </EntityType>
+        <EntityType Name="Subcategory">
+          <Key>
+            <PropertyRef Name="subcategoryId" />
+          </Key>
+          <Property Name="subcategoryId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="subcategoryIsmi" Type="nvarchar" MaxLength="50" />
+          <Property Name="subcategorySet" Type="int" />
+        </EntityType>
+        <EntityType Name="sysdiagrams">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="principal_id" Type="int" Nullable="false" />
+          <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="version" Type="int" />
+          <Property Name="definition" Type="varbinary(max)" />
+        </EntityType>
+        <EntityType Name="YetkiTurler">
+          <Key>
+            <PropertyRef Name="yetkiTurID" />
+          </Key>
+          <Property Name="yetkiTurID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="yetkiTurAd" Type="nvarchar" MaxLength="50" />
+        </EntityType>
+        <Association Name="FK_Category_Subcategory">
+          <End Role="Subcategory" Type="Self.Subcategory" Multiplicity="0..1" />
+          <End Role="Category" Type="Self.Category" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Subcategory">
+              <PropertyRef Name="subcategoryId" />
+            </Principal>
+            <Dependent Role="Category">
+              <PropertyRef Name="categorySet" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Items_Subcategory1">
+          <End Role="Subcategory" Type="Self.Subcategory" Multiplicity="0..1" />
+          <End Role="Items" Type="Self.Items" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Subcategory">
+              <PropertyRef Name="subcategoryId" />
+            </Principal>
+            <Dependent Role="Items">
+              <PropertyRef Name="itemSet" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Magazalar_Markalar">
+          <End Role="Markalar" Type="Self.Markalar" Multiplicity="0..1" />
+          <End Role="Magazalar" Type="Self.Magazalar" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Markalar">
+              <PropertyRef Name="markaId" />
+            </Principal>
+            <Dependent Role="Magazalar">
+              <PropertyRef Name="StoreSet" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Personeller_Birimler">
+          <End Role="Birimler" Type="Self.Birimler" Multiplicity="0..1" />
+          <End Role="Personeller" Type="Self.Personeller" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Birimler">
+              <PropertyRef Name="birimId" />
+            </Principal>
+            <Dependent Role="Personeller">
+              <PropertyRef Name="personelBirimId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Personeller_YetkiTurler">
+          <End Role="YetkiTurler" Type="Self.YetkiTurler" Multiplicity="0..1" />
+          <End Role="Personeller" Type="Self.Personeller" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="YetkiTurler">
+              <PropertyRef Name="yetkiTurID" />
+            </Principal>
+            <Dependent Role="Personeller">
+              <PropertyRef Name="personelYetkiTurId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="FornetDBModelStoreContainer">
+          <EntitySet Name="Birimler" EntityType="Self.Birimler" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Category" EntityType="Self.Category" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Items" EntityType="Self.Items" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Magazalar" EntityType="Self.Magazalar" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Markalar" EntityType="Self.Markalar" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Personeller" EntityType="Self.Personeller" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ServiceForms" EntityType="Self.ServiceForms" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Subcategory" EntityType="Self.Subcategory" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="YetkiTurler" EntityType="Self.YetkiTurler" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_Category_Subcategory" Association="Self.FK_Category_Subcategory">
+            <End Role="Subcategory" EntitySet="Subcategory" />
+            <End Role="Category" EntitySet="Category" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Items_Subcategory1" Association="Self.FK_Items_Subcategory1">
+            <End Role="Subcategory" EntitySet="Subcategory" />
+            <End Role="Items" EntitySet="Items" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Magazalar_Markalar" Association="Self.FK_Magazalar_Markalar">
+            <End Role="Markalar" EntitySet="Markalar" />
+            <End Role="Magazalar" EntitySet="Magazalar" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Personeller_Birimler" Association="Self.FK_Personeller_Birimler">
+            <End Role="Birimler" EntitySet="Birimler" />
+            <End Role="Personeller" EntitySet="Personeller" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Personeller_YetkiTurler" Association="Self.FK_Personeller_YetkiTurler">
+            <End Role="YetkiTurler" EntitySet="YetkiTurler" />
+            <End Role="Personeller" EntitySet="Personeller" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="FornetDBModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Birimler">
+          <Key>
+            <PropertyRef Name="birimId" />
+          </Key>
+          <Property Name="birimId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="birimAd" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Personeller" Relationship="Self.FK_Personeller_Birimler" FromRole="Birimler" ToRole="Personeller" />
+        </EntityType>
+        <EntityType Name="Personeller">
+          <Key>
+            <PropertyRef Name="personelId" />
+          </Key>
+          <Property Name="personelId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="personelAdSoyad" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="personelKullaniciAd" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="personelParola" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="personelBirimId" Type="Int32" />
+          <Property Name="personelYetkiTurId" Type="Int32" />
+          <NavigationProperty Name="Birimler" Relationship="Self.FK_Personeller_Birimler" FromRole="Personeller" ToRole="Birimler" />
+          <NavigationProperty Name="YetkiTurler" Relationship="Self.FK_Personeller_YetkiTurler" FromRole="Personeller" ToRole="YetkiTurler" />
+          <Property Name="personelImza" Type="Binary" MaxLength="Max" FixedLength="false" />
+        </EntityType>
+        <EntityType Name="sysdiagrams">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="principal_id" Type="Int32" Nullable="false" />
+          <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="version" Type="Int32" />
+          <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
+        </EntityType>
+        <EntityType Name="YetkiTurler">
+          <Key>
+            <PropertyRef Name="yetkiTurID" />
+          </Key>
+          <Property Name="yetkiTurID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="yetkiTurAd" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Personeller" Relationship="Self.FK_Personeller_YetkiTurler" FromRole="YetkiTurler" ToRole="Personeller" />
+        </EntityType>
+        <Association Name="FK_Personeller_Birimler">
+          <End Role="Birimler" Type="Self.Birimler" Multiplicity="0..1" />
+          <End Role="Personeller" Type="Self.Personeller" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Birimler">
+              <PropertyRef Name="birimId" />
+            </Principal>
+            <Dependent Role="Personeller">
+              <PropertyRef Name="personelBirimId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Personeller_YetkiTurler">
+          <End Role="YetkiTurler" Type="Self.YetkiTurler" Multiplicity="0..1" />
+          <End Role="Personeller" Type="Self.Personeller" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="YetkiTurler">
+              <PropertyRef Name="yetkiTurID" />
+            </Principal>
+            <Dependent Role="Personeller">
+              <PropertyRef Name="personelYetkiTurId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="FornetDBEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Birimler" EntityType="Self.Birimler" />
+          <EntitySet Name="Personeller" EntityType="Self.Personeller" />
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" />
+          <EntitySet Name="YetkiTurler" EntityType="Self.YetkiTurler" />
+          <AssociationSet Name="FK_Personeller_Birimler" Association="Self.FK_Personeller_Birimler">
+            <End Role="Birimler" EntitySet="Birimler" />
+            <End Role="Personeller" EntitySet="Personeller" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Personeller_YetkiTurler" Association="Self.FK_Personeller_YetkiTurler">
+            <End Role="YetkiTurler" EntitySet="YetkiTurler" />
+            <End Role="Personeller" EntitySet="Personeller" />
+          </AssociationSet>
+          <EntitySet Name="Category" EntityType="FornetDBModel.Category" />
+          <EntitySet Name="Items" EntityType="FornetDBModel.Items" />
+          <EntitySet Name="Subcategory" EntityType="FornetDBModel.Subcategory" />
+          <AssociationSet Name="FK_Category_Subcategory" Association="FornetDBModel.FK_Category_Subcategory">
+            <End Role="Subcategory" EntitySet="Subcategory" />
+            <End Role="Category" EntitySet="Category" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Items_Subcategory1" Association="FornetDBModel.FK_Items_Subcategory1">
+            <End Role="Subcategory" EntitySet="Subcategory" />
+            <End Role="Items" EntitySet="Items" />
+          </AssociationSet>
+          <EntitySet Name="Magazalar" EntityType="FornetDBModel.Magazalar" />
+          <EntitySet Name="Markalar" EntityType="FornetDBModel.Markalar" />
+          <AssociationSet Name="FK_Magazalar_Markalar" Association="FornetDBModel.FK_Magazalar_Markalar">
+            <End Role="Markalar" EntitySet="Markalar" />
+            <End Role="Magazalar" EntitySet="Magazalar" />
+          </AssociationSet>
+          <EntitySet Name="ServiceForms" EntityType="FornetDBModel.ServiceForms" />
+        </EntityContainer>
+        <EntityType Name="Category">
+          <Key>
+            <PropertyRef Name="categoryId" />
+          </Key>
+          <Property Name="categoryId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="categoryIsmi" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="categorySet" Type="Int32" />
+          <NavigationProperty Name="Subcategory" Relationship="FornetDBModel.FK_Category_Subcategory" FromRole="Category" ToRole="Subcategory" />
+        </EntityType>
+        <EntityType Name="Items">
+          <Key>
+            <PropertyRef Name="itemId" />
+          </Key>
+          <Property Name="itemId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="itemSet" Type="Int32" />
+          <Property Name="itemName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Subcategory" Relationship="FornetDBModel.FK_Items_Subcategory1" FromRole="Items" ToRole="Subcategory" />
+        </EntityType>
+        <EntityType Name="Subcategory">
+          <Key>
+            <PropertyRef Name="subcategoryId" />
+          </Key>
+          <Property Name="subcategoryId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="subcategoryIsmi" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="subcategorySet" Type="Int32" />
+          <NavigationProperty Name="Category" Relationship="FornetDBModel.FK_Category_Subcategory" FromRole="Subcategory" ToRole="Category" />
+          <NavigationProperty Name="Items" Relationship="FornetDBModel.FK_Items_Subcategory1" FromRole="Subcategory" ToRole="Items" />
+        </EntityType>
+        <Association Name="FK_Category_Subcategory">
+          <End Type="FornetDBModel.Subcategory" Role="Subcategory" Multiplicity="0..1" />
+          <End Type="FornetDBModel.Category" Role="Category" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Subcategory">
+              <PropertyRef Name="subcategoryId" />
+            </Principal>
+            <Dependent Role="Category">
+              <PropertyRef Name="categorySet" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Items_Subcategory1">
+          <End Type="FornetDBModel.Subcategory" Role="Subcategory" Multiplicity="0..1" />
+          <End Type="FornetDBModel.Items" Role="Items" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Subcategory">
+              <PropertyRef Name="subcategoryId" />
+            </Principal>
+            <Dependent Role="Items">
+              <PropertyRef Name="itemSet" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="Magazalar">
+          <Key>
+            <PropertyRef Name="StoreId" />
+          </Key>
+          <Property Name="StoreId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="StoreSet" Type="Int32" />
+          <Property Name="StoreCode" Type="Int32" />
+          <Property Name="StoreName" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="Adress" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="City" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="District" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Phone" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Email" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="DateCreated" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Markalar" Relationship="FornetDBModel.FK_Magazalar_Markalar" FromRole="Magazalar" ToRole="Markalar" />
+        </EntityType>
+        <EntityType Name="Markalar">
+          <Key>
+            <PropertyRef Name="markaId" />
+          </Key>
+          <Property Name="markaId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="markaIsım" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Magazalar" Relationship="FornetDBModel.FK_Magazalar_Markalar" FromRole="Markalar" ToRole="Magazalar" />
+        </EntityType>
+        <Association Name="FK_Magazalar_Markalar">
+          <End Type="FornetDBModel.Markalar" Role="Markalar" Multiplicity="0..1" />
+          <End Type="FornetDBModel.Magazalar" Role="Magazalar" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Markalar">
+              <PropertyRef Name="markaId" />
+            </Principal>
+            <Dependent Role="Magazalar">
+              <PropertyRef Name="StoreSet" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="ServiceForms">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="HelpdeskId" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="IncNumber" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="ServiceType" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="Site" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="StoreSelect" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="CategoryId" Type="Int32" />
+          <Property Name="SubcategoryId" Type="Int32" />
+          <Property Name="Items" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="VendorSR" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="ArrivalDateTime" Type="DateTime" Precision="3" />
+          <Property Name="DepartureDateTime" Type="DateTime" Precision="3" />
+          <Property Name="Technician" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="SignatureData" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="SupportPersonName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="FormDetails" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="CreatedAt" Type="DateTime" Precision="3" />
+          <Property Name="Durum" Type="Int32" />
+          <Property Name="TechnicianSignatureFileName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="Adress" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="CityDistrict" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+        </EntityType>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="FornetDBModelStoreContainer" CdmEntityContainer="FornetDBEntities">
+          <EntitySetMapping Name="Birimler">
+            <EntityTypeMapping TypeName="FornetDBModel.Birimler">
+              <MappingFragment StoreEntitySet="Birimler">
+                <ScalarProperty Name="birimId" ColumnName="birimId" />
+                <ScalarProperty Name="birimAd" ColumnName="birimAd" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Personeller">
+            <EntityTypeMapping TypeName="FornetDBModel.Personeller">
+              <MappingFragment StoreEntitySet="Personeller">
+                <ScalarProperty Name="personelImza" ColumnName="personelImza" />
+                <ScalarProperty Name="personelId" ColumnName="personelId" />
+                <ScalarProperty Name="personelAdSoyad" ColumnName="personelAdSoyad" />
+                <ScalarProperty Name="personelKullaniciAd" ColumnName="personelKullaniciAd" />
+                <ScalarProperty Name="personelParola" ColumnName="personelParola" />
+                <ScalarProperty Name="personelBirimId" ColumnName="personelBirimId" />
+                <ScalarProperty Name="personelYetkiTurId" ColumnName="personelYetkiTurId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="sysdiagrams">
+            <EntityTypeMapping TypeName="FornetDBModel.sysdiagrams">
+              <MappingFragment StoreEntitySet="sysdiagrams">
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="principal_id" ColumnName="principal_id" />
+                <ScalarProperty Name="diagram_id" ColumnName="diagram_id" />
+                <ScalarProperty Name="version" ColumnName="version" />
+                <ScalarProperty Name="definition" ColumnName="definition" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="YetkiTurler">
+            <EntityTypeMapping TypeName="FornetDBModel.YetkiTurler">
+              <MappingFragment StoreEntitySet="YetkiTurler">
+                <ScalarProperty Name="yetkiTurID" ColumnName="yetkiTurID" />
+                <ScalarProperty Name="yetkiTurAd" ColumnName="yetkiTurAd" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Category">
+            <EntityTypeMapping TypeName="FornetDBModel.Category">
+              <MappingFragment StoreEntitySet="Category">
+                <ScalarProperty Name="categorySet" ColumnName="categorySet" />
+                <ScalarProperty Name="categoryIsmi" ColumnName="categoryIsmi" />
+                <ScalarProperty Name="categoryId" ColumnName="categoryId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Items">
+            <EntityTypeMapping TypeName="FornetDBModel.Items">
+              <MappingFragment StoreEntitySet="Items">
+                <ScalarProperty Name="itemName" ColumnName="itemName" />
+                <ScalarProperty Name="itemSet" ColumnName="itemSet" />
+                <ScalarProperty Name="itemId" ColumnName="itemId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Subcategory">
+            <EntityTypeMapping TypeName="FornetDBModel.Subcategory">
+              <MappingFragment StoreEntitySet="Subcategory">
+                <ScalarProperty Name="subcategorySet" ColumnName="subcategorySet" />
+                <ScalarProperty Name="subcategoryIsmi" ColumnName="subcategoryIsmi" />
+                <ScalarProperty Name="subcategoryId" ColumnName="subcategoryId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Magazalar">
+            <EntityTypeMapping TypeName="FornetDBModel.Magazalar">
+              <MappingFragment StoreEntitySet="Magazalar">
+                <ScalarProperty Name="DateCreated" ColumnName="DateCreated" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="Phone" ColumnName="Phone" />
+                <ScalarProperty Name="District" ColumnName="District" />
+                <ScalarProperty Name="City" ColumnName="City" />
+                <ScalarProperty Name="Adress" ColumnName="Adress" />
+                <ScalarProperty Name="StoreName" ColumnName="StoreName" />
+                <ScalarProperty Name="StoreCode" ColumnName="StoreCode" />
+                <ScalarProperty Name="StoreSet" ColumnName="StoreSet" />
+                <ScalarProperty Name="StoreId" ColumnName="StoreId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Markalar">
+            <EntityTypeMapping TypeName="FornetDBModel.Markalar">
+              <MappingFragment StoreEntitySet="Markalar">
+                <ScalarProperty Name="markaIsım" ColumnName="markaIsım" />
+                <ScalarProperty Name="markaId" ColumnName="markaId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ServiceForms">
+            <EntityTypeMapping TypeName="FornetDBModel.ServiceForms">
+              <MappingFragment StoreEntitySet="ServiceForms">
+                <ScalarProperty Name="CityDistrict" ColumnName="CityDistrict" />
+                <ScalarProperty Name="Adress" ColumnName="Adress" />
+                <ScalarProperty Name="TechnicianSignatureFileName" ColumnName="TechnicianSignatureFileName" />
+                <ScalarProperty Name="Durum" ColumnName="Durum" />
+                <ScalarProperty Name="CreatedAt" ColumnName="CreatedAt" />
+                <ScalarProperty Name="FormDetails" ColumnName="FormDetails" />
+                <ScalarProperty Name="SupportPersonName" ColumnName="SupportPersonName" />
+                <ScalarProperty Name="SignatureData" ColumnName="SignatureData" />
+                <ScalarProperty Name="Technician" ColumnName="Technician" />
+                <ScalarProperty Name="DepartureDateTime" ColumnName="DepartureDateTime" />
+                <ScalarProperty Name="ArrivalDateTime" ColumnName="ArrivalDateTime" />
+                <ScalarProperty Name="VendorSR" ColumnName="VendorSR" />
+                <ScalarProperty Name="Items" ColumnName="Items" />
+                <ScalarProperty Name="SubcategoryId" ColumnName="SubcategoryId" />
+                <ScalarProperty Name="CategoryId" ColumnName="CategoryId" />
+                <ScalarProperty Name="StoreSelect" ColumnName="StoreSelect" />
+                <ScalarProperty Name="Site" ColumnName="Site" />
+                <ScalarProperty Name="ServiceType" ColumnName="ServiceType" />
+                <ScalarProperty Name="IncNumber" ColumnName="IncNumber" />
+                <ScalarProperty Name="HelpdeskId" ColumnName="HelpdeskId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

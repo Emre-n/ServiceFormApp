@@ -1,0 +1,267 @@
+﻿@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_LayoutYonetici.cshtml";
+}
+
+<div class="container mt-4">
+    <h2 class="mb-4">Servis Formu</h2>
+
+    @* Formu POST olarak gönderiyoruz ve target="_blank" ile PDF'i yeni sekmede açıyoruz *@
+    @using (Html.BeginForm("GeneratePdf", "Yonetici", FormMethod.Post, new { id = "serviceForm" }))
+
+    {
+
+        <div class="mb-3">
+            <label for="HelpdeskId">Helpdesk Id</label>
+            <input type="text" class="form-control" id="HelpdeskId" name="HelpdeskId" placeholder="Helpdesk ID" required>
+        </div>
+
+        <div class="mb-3">
+            <label for="incNumber">INC Number</label>
+            <input type="text" class="form-control" id="incNumber" name="incNumber" placeholder="INC Number" required>
+        </div>
+
+        <div class="mb-3">
+            <label for="serviceType">Service Type</label>
+            <select class="form-select" id="serviceType" name="serviceType" required>
+                <option selected>On Site Service_Teknonet</option>
+            </select>
+        </div>
+
+        <div class="mb-3">
+            <label for="site">Site</label>
+            <select class="form-select" id="site" name="site" required>
+                <option>Not associated to any site</option>
+                @foreach (var marka in ViewBag.Markalar as List<SelectListItem>)
+                {
+                    <option value="@marka.Value">@marka.Text</option>
+                }
+            </select>
+        </div>
+
+        <div class="mb-3">
+            <label class="text-danger" for="storeSelect">* Dept-Store</label>
+            <select class="form-select" id="storeSelect" name="storeSelect" required>
+                <option value="">Mağaza Seçiniz</option>
+                @if (ViewBag.Stores != null)
+                {
+                    foreach (var store in ViewBag.Stores as List<SelectListItem>)
+                    {
+                        <option value="@store.Value">@store.Text</option>
+                    }
+                }
+            </select>
+        </div>
+        <div class="mb-3">
+            <label for="Adress">Mağaza Adresi:</label>
+            <input type="text" class="form-control" id="Adress" name="Adress" readonly />
+        </div>
+
+        <div class="mb-3">
+            <label for="CityDistrict">İl / İlçe:</label>
+            <input type="text" class="form-control" id="CityDistrict" name="CityDistrict" readonly />
+        </div>
+
+
+        <div class="mb-3">
+            <label for="Category">Kategori</label>
+            <select class="form-select" id="Category" name="Category" required>
+                <option value="">Kategori Seçiniz</option>
+                @foreach (var category in ViewBag.Category as SelectList)
+                {
+                    <option value="@category.Value">@category.Text</option>
+                }
+            </select>
+        </div>
+
+        <div class="mb-3">
+            <label for="Subcategory">Alt Kategori</label>
+            <select class="form-select" id="Subcategory" name="Subcategory" required>
+                <option value="">Alt Kategori Seçiniz</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="Item">Ürün(ler)</label>
+            <div id="item-container">
+                <div class="input-group mb-2 item-dropdown">
+                    <select class="form-control item-select" name="Item[]">
+                        <option value="">Ürün Seçiniz</option>
+                        @foreach (var item in ViewBag.Items as SelectList)
+                        {
+                            <option value="@item.Value">@item.Text</option>
+                        }
+                    </select>
+                    <button class="btn btn-outline-danger remove-item" type="button">–</button>
+                </div>
+            </div>
+            <button class="btn btn-outline-primary" type="button" id="add-item">+ Ürün Ekle</button>
+        </div>
+
+        <div class="mb-3">
+            <label for="vendorSR">Vendor SR</label>
+            <input type="text" class="form-control" id="vendorSR" name="vendorSR" required>
+        </div>
+
+        <div class="mb-3">
+            <label for="arrivalDateTime">Service - Date & Time of Arrival</label>
+            <input type="datetime-local" class="form-control" id="arrivalDateTime" name="arrivalDateTime" required>
+        </div>
+
+        <div class="mb-3">
+            <label for="departureDateTime">Service - Date & Time of Departure</label>
+            <input type="datetime-local" class="form-control" id="departureDateTime" name="departureDateTime" required>
+        </div>
+
+        <div class="mb-3">
+            <label class="text-danger" for="technician">* Technicians</label>
+            <select class="form-select" id="technician" name="technician" required>
+                <option>@Session["personelAdSoyad"]</option>
+            </select>
+        </div>
+
+        //imza alanı
+        <div class="mb-3">
+            <label class="text-danger" for="personel-signature">* Teknisyen İmzası:</label>
+
+            @{
+                string adSoyad = Session["personelAdSoyad"]?.ToString() ?? "default";
+                string sanitized = adSoyad
+                    .ToLower()
+                    .Replace(" ", "")
+                    .Replace("ı", "i")
+                    .Replace("ö", "o")
+                    .Replace("ü", "u")
+                    .Replace("ç", "c")
+                    .Replace("ş", "s")
+                    .Replace("ğ", "g");
+                string signatureFileName = sanitized + ".png"; // .svg değil .png
+            }
+
+            <img src="~/Files/@signatureFileName" alt="Teknisyen İmzası" width="200" />
+            <input type="hidden" name="technicianSignatureFile" value="@signatureFileName" />
+        </div>
+
+
+        <div class="mb-3">
+            <label for="supportPersonName">Mağazada Destek Alan Kişi Adı</label>
+            <input type="text" class="form-control" id="supportPersonName" name="supportPersonName" placeholder="Adı Soyadı" required>
+        </div>
+
+        <div class="mb-3">
+            <label for="signature">İmza</label>
+            <div class="text-center">
+                <canvas id="signature-pad" class="border border-dark rounded" width="400" height="200"></canvas>
+                <div class="button-group mt-2">
+                    <button type="button" id="clear" class="btn btn-danger btn-sm">Temizle</button>
+                </div>
+            </div>
+        </div>
+
+        <input type="hidden" id="signatureData" name="signatureData" />
+
+        <div class="mb-3">
+            <label for="formdetails">Servis Açıklaması</label>
+            <input type="text" class="form-control" id="formdetails" name="formdetails" placeholder="Servis Açıklaması" required>
+        </div>
+
+        <button type="submit" class="btn btn-primary mt-3" id="submitForm">Gönder</button>
+    }
+</div>
+
+        @section Scripts {
+            <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+            <script src="https://cdn.jsdelivr.net/npm/signature_pad@4.0.0/dist/signature_pad.umd.min.js"></script>
+            <script>
+                    $(document).ready(function () {
+                        var signaturePad = new SignaturePad(document.getElementById('signature-pad'));
+
+                        $('#clear').click(function () {
+                            signaturePad.clear();
+                        });
+
+                        $('#submitForm').click(function (e) {
+                            if (signaturePad.isEmpty()) {
+                                alert("İmza alanı boş! Lütfen imza atın.");
+                                e.preventDefault();
+                                return false;
+                            }
+
+                            var data = signaturePad.toDataURL('image/png');
+                            $('#signatureData').val(data);
+                        });
+
+                        // Kategori > Alt Kategori > Ürün zinciri
+                        $('#Category').change(function () {
+                            var categoryId = $(this).val();
+                            if (categoryId) {
+                                $.get('@Url.Action("GetSubcategories", "Yonetici")', { categoryId: categoryId }, function (data) {
+                                    var subcategorySelect = $('#Subcategory');
+                                    subcategorySelect.empty().append('<option value="">Alt Kategori Seçiniz</option>');
+                                    $.each(data, function (index, subcategory) {
+                                        subcategorySelect.append('<option value="' + subcategory.Value + '">' + subcategory.Text + '</option>');
+                                    });
+                                    $('.item-select').empty().append('<option value="">Ürün Seçiniz</option>');
+                                });
+                            }
+                        });
+
+                        $('#Subcategory').change(function () {
+                            var subcategoryId = $(this).val();
+                            if (subcategoryId) {
+                                $.get('@Url.Action("GetItems", "Yonetici")', { subcategoryId: subcategoryId }, function (data) {
+                                    $('.item-select').each(function () {
+                                        var select = $(this);
+                                        select.empty().append('<option value="">Ürün Seçiniz</option>');
+                                        $.each(data, function (index, item) {
+                                            select.append('<option value="' + item.Value + '">' + item.Text + '</option>');
+                                        });
+                                    });
+                                });
+                            }
+                        });
+
+                        $('#add-item').click(function () {
+                            let count = $('#item-container .item-dropdown').length;
+                            if (count < 7) {
+                                let newItem = $('#item-container .item-dropdown:first').clone();
+                                newItem.find('select').val('');
+                                $('#item-container').append(newItem);
+                            }
+                        });
+
+                        $('#item-container').on('click', '.remove-item', function () {
+                            if ($('#item-container .item-dropdown').length > 1) {
+                                $(this).closest('.item-dropdown').remove();
+                            }
+                        });
+
+
+                        $("#storeSelect").change(function () {
+                            var storeId = $(this).val();
+
+                            if (storeId) {
+                                $.ajax({
+                                    url: '/Yonetici/GetStoreDetails',
+                                    type: 'GET',
+                                    data: { storeId: storeId },
+                                    success: function (data) {
+                                        console.log("Gelen veri:", data);
+                                        $("#Adress").val(data.Adress || "");
+                                        $("#CityDistrict").val((data.City || "") + " / " + (data.District || ""));
+                                    },
+                                    error: function () {
+                                        alert("Hata oluştu.");
+                                        $("#Adress").val("");
+                                        $("#CityDistrict").val("");
+                                    }
+                                });
+                            } else {
+                                $("#Adress").val("");
+                                $("#CityDistrict").val("");
+                            }
+                        });
+
+                    });
+            </script>
+        }

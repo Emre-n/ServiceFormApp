@@ -1,0 +1,69 @@
+@{
+    Layout = null;
+}
+
+<!doctype html>
+<html lang="en" data-bs-theme="auto">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <title>ServisForm Yonetici Panel</title>
+    <link href="~/Content/bootstrap.min.css" rel="stylesheet" />
+    <link href="~/Content/sign-in.css" rel="stylesheet" />
+    <script src="~/Scripts/bootstrap.bundle.min.js"></script>
+
+    <!-- Bootstrap Icons (gerekirse CDN ile ekledim) -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+</head>
+<body>
+
+    <nav class="navbar navbar-expand-md bg-secondary">
+        <div class="container">
+            <a class="navbar-brand text-white" href="#">ServisForm Yonetici</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+                    aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        @Html.ActionLink("Anasayfa", "Index", "Dashboard", null, new { @class = "nav-link text-white" })
+                    </li>
+
+                    <li class="nav-item">
+                        @Html.ActionLink("Servis Formu Oluştur", "Index", "Yonetici", null, new { @class = "nav-link text-white" })
+                    </li>
+
+                    <li class="nav-item">
+                        @Html.ActionLink("Admin Paneli", "Index", "Admin", null, new { @class = "nav-link text-white" })
+                    </li>
+
+                    
+                </ul>
+
+                <!-- Sağ üstte kullanıcı ismi ve çıkış menüsü -->
+                <div class="dropdown">
+                    <a class="nav-link dropdown-toggle d-flex align-items-center text-white gap-2" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        <span>@Session["personelAdSoyad"]</span>
+                        <i class="bi bi-person-circle fs-4"></i>
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
+                        <li>
+                            <a class="dropdown-item" href="@Url.Action("Logout", ViewContext.RouteData.Values["controller"].ToString())">Çıkış Yap</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <main role="main" class="container mt-4">
+        @RenderBody()
+    </main>
+
+    @RenderSection("Scripts", required: false)
+
+</body>
+</html>

@@ -1,0 +1,114 @@
+﻿@{
+    ViewBag.Title = "Dashboard";
+    Layout = "~/Views/Shared/_LayoutYonetici.cshtml";
+}
+
+<!-- Chart.js CDN -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<div class="container mt-5">
+    <div class="text-center mb-4">
+        <h2 class="fw-bold">👋 Hoş geldin, @ViewBag.AdSoyad</h2>
+        <p class="text-muted">Bugüne özel özet performansını aşağıda görebilirsin.</p>
+    </div>
+
+    <div class="row g-4">
+        <div class="col-md-4">
+            <div class="card shadow-sm h-100">
+                <div class="card-body">
+                    <h5 class="card-title">📅 Bugünkü Formlar</h5>
+                    <p class="card-text display-6 fw-bold">@ViewBag.BugunkuFormSayisi</p>
+                    <p class="text-muted">Bugün kayıt edilen servis formu sayısı</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card shadow-sm h-100">
+                <div class="card-body">
+                    <h5 class="card-title">📊 Toplam Formlar</h5>
+                    <p class="card-text display-6 fw-bold">@ViewBag.ToplamFormSayisi</p>
+                    <p class="text-muted">Toplam oluşturduğun servis formu sayısı</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card shadow-sm h-100">
+                <div class="card-body">
+                    <h5 class="card-title">🕒 Son Giriş Zamanı</h5>
+                    <p class="card-text display-6 fw-bold">@DateTime.Now.ToString("HH:mm")</p>
+                    <p class="text-muted">Bugünkü sistem erişim zamanı</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row mt-5">
+        <div class="col-md-8 offset-md-2">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title text-center">📈 Haftalık Form Dağılımı</h5>
+                    <canvas id="formChart" height="120"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row mt-5">
+        <div class="col text-center">
+            @if (ViewBag.Yetki == 1)
+            {
+                <a href="@Url.Action("Index", "Admin")" class="btn btn-outline-primary btn-lg me-2">
+                    🔧 Admin Paneli
+                </a>
+            }
+            @if (ViewBag.Yetki == 1)
+            {
+                <a href="@Url.Action("Index", "Yonetici")" class="btn btn-outline-success btn-lg">
+                    📝 Servis Formu Oluştur
+                </a>
+            }
+        </div>
+    </div>
+</div>
+
+<script>
+    fetch('/Dashboard/GetWeeklyFormData')
+        .then(response => response.json())
+        .then(data => {
+            const labels = data.map(x => x.tarih);
+            const values = data.map(x => x.adet);
+
+            const chartData = {
+                labels: labels,
+                datasets: [{
+                    label: 'Servis Formları',
+                    data: values,
+                    fill: true,
+                    borderColor: 'rgba(75, 192, 192, 1)',
+                    backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                    tension: 0.4
+                }]
+            };
+
+            const config = {
+                type: 'line',
+                data: chartData,
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: { display: false }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: { stepSize: 1 }
+                        }
+                    }
+                }
+            };
+
+            new Chart(document.getElementById('formChart'), config);
+        });
+</script>

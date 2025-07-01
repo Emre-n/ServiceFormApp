@@ -1,0 +1,64 @@
+﻿@model Fornet.Models.ServiceForms
+
+@{
+    ViewBag.Title = "Servis Formu Güncelle";
+    Layout = "~/Views/Shared/_LayoutYonetici.cshtml";
+}
+
+<div class="container mt-5">
+    <h2 class="mb-4 text-center">Servis Formu Güncelle</h2>
+
+    @using (Html.BeginForm("FormGuncelle", "Admin", FormMethod.Post))
+    {
+        @Html.AntiForgeryToken()
+        @Html.HiddenFor(m => m.Id)
+
+        <div class="mb-3">
+            <label>Helpdesk ID</label>
+            @Html.TextBoxFor(m => m.HelpdeskId, new { @class = "form-control", required = "required" })
+        </div>
+
+        <div class="mb-3">
+            <label>INC Number</label>
+            @Html.TextBoxFor(m => m.IncNumber, new { @class = "form-control", required = "required" })
+        </div>
+
+        <div class="mb-3">
+            <label>Teknisyen</label>
+            @Html.TextBoxFor(m => m.Technician, new { @class = "form-control" })
+        </div>
+
+        <div class="mb-3">
+            <label>Site</label>
+            @Html.TextBoxFor(m => m.Site, new { @class = "form-control" })
+        </div>
+
+        <div class="mb-3">
+            <label>Vendor SR</label>
+            @Html.TextBoxFor(m => m.VendorSR, new { @class = "form-control" })
+        </div>
+
+        <div class="mb-3">
+            <label>Servis Açıklaması</label>
+            @Html.TextAreaFor(m => m.FormDetails, new { @class = "form-control", rows = 3 })
+        </div>
+
+        <div class="mb-3">
+            <label>Destek Alan Kişi</label>
+            @Html.TextBoxFor(m => m.SupportPersonName, new { @class = "form-control" })
+        </div>
+
+        <div class="mb-3">
+            <label>Geliş Tarihi</label>
+            @Html.TextBoxFor(m => m.ArrivalDateTime, "{0:yyyy-MM-ddTHH:mm}", new { @type = "datetime-local", @class = "form-control" })
+        </div>
+
+        <div class="mb-3">
+            <label>Gidiş Tarihi</label>
+            @Html.TextBoxFor(m => m.DepartureDateTime, "{0:yyyy-MM-ddTHH:mm}", new { @type = "datetime-local", @class = "form-control" })
+        </div>
+
+        <button type="submit" class="btn btn-success">Kaydet</button>
+        <a href="@Url.Action("Index", "Admin")" class="btn btn-secondary ms-2">İptal</a>
+    }
+</div>

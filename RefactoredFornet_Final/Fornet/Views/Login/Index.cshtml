@@ -1,0 +1,56 @@
+@{
+
+    Layout = null;
+
+}
+
+
+<!doctype html>
+<html lang="en" data-bs-theme="auto">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <title>Servis Formu Giris</title>
+    <link href="~/Content/bootstrap.min.css" rel="stylesheet" />
+    <link href="~/Content/sign-in.css" rel="stylesheet" />
+
+</head>
+<body class="d-flex align-items-center py-4 bg-body-tertiary">
+
+
+    <main class="form-signin w-100 m-auto">
+        @using (Html.BeginForm("Index", "Login", FormMethod.Post))
+        {
+            <img class="mb-6" src="~/Files/logo.png" alt="" width="400" height="200">
+            <h5 class="h5 mb-3 fw-normal">Servis Formu Giris Sayfasi</h5>
+
+            <div class="form-floating">
+                <input type="text" class="form-control" id="kullaniciAd" name="kullaniciAd">
+                <label for="KullaniciAd">Kullanici Adiniz</label>
+            </div>
+            <br />
+            <div class="form-floating">
+                <input type="password" class="form-control" id="parola" name="parola">
+                <label for="parola">Parola</label>
+            </div>
+
+            <button class="btn btn-primary w-100 py-2" type="submit">Giris Yap</button>
+            <br />
+            <br />
+            @*<p> @ViewBag.mesaj</p>*@
+            if (ViewBag.mesaj != null)
+            {
+                <div class="alert alert-danger d-flex align-items-center" role="alert">
+
+                    @ViewBag.mesaj
+
+                </div>
+            }
+
+        }
+
+    </main>
+
+</body>
+</html>

@@ -1,0 +1,46 @@
+﻿@model Fornet.Models.ServiceForms
+
+@{
+    ViewBag.Title = "Servis Formu Detayı";
+    Layout = "~/Views/Shared/_LayoutYonetici.cshtml";
+}
+
+<div class="container mt-5">
+    <h2 class="text-center mb-4">📄 Servis Formu Detayı</h2>
+
+    <div class="card shadow-sm p-4">
+        <table class="table table-bordered">
+            <tr><th>Helpdesk ID</th><td>@Model.HelpdeskId</td></tr>
+            <tr><th>INC Number</th><td>@Model.IncNumber</td></tr>
+            <tr><th>Servis Türü</th><td>@Model.ServiceType</td></tr>
+            <tr><th>Site</th><td>@Model.Site</td></tr>
+            <tr><th>Mağaza (Store)</th><td>@Model.StoreSelect</td></tr>
+            <tr><th>Kategori ID</th><td>@Model.CategoryId</td></tr>
+            <tr><th>Alt Kategori ID</th><td>@Model.SubcategoryId</td></tr>
+            <tr><th>Ürünler (Items)</th><td>@Model.Items</td></tr>
+            <tr><th>Vendor SR</th><td>@Model.VendorSR</td></tr>
+            <tr><th>Geliş Tarihi</th><td>@Model.ArrivalDateTime?.ToString("dd.MM.yyyy HH:mm")</td></tr>
+            <tr><th>Gidiş Tarihi</th><td>@Model.DepartureDateTime?.ToString("dd.MM.yyyy HH:mm")</td></tr>
+            <tr><th>Teknisyen</th><td>@Model.Technician</td></tr>
+            <tr><th>Destek Alan Kişi</th><td>@Model.SupportPersonName</td></tr>
+            <tr><th>Form Açıklaması</th><td>@Model.FormDetails</td></tr>
+            <tr>
+                <th>İmza</th>
+                <td>
+                    @if (!string.IsNullOrEmpty(Model.SignatureData))
+                    {
+                        <img src="data:image/png;base64,@Model.SignatureData" alt="İmza" class="img-fluid" width="200" />
+                    }
+                    else
+                    {
+                        <span class="text-muted">İmza yok</span>
+                    }
+                </td>
+            </tr>
+        </table>
+
+        <div class="mt-4 text-center">
+            <a href="@Url.Action("Index", "Admin")" class="btn btn-secondary">Geri Dön</a>
+        </div>
+    </div>
+</div>

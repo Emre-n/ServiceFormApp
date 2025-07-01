@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="b85818359f11422785a5f53a43f8bead" Name="Diagram1">
+        <EntityTypeShape EntityType="FornetDBModel.Birimler" Width="1.5" PointX="0.75" PointY="1.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="FornetDBModel.Personeller" Width="1.5" PointX="3" PointY="1" IsExpanded="true" />
+        <EntityTypeShape EntityType="FornetDBModel.sysdiagrams" Width="1.5" PointX="3.125" PointY="4.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="FornetDBModel.YetkiTurler" Width="1.5" PointX="0.75" PointY="5.375" IsExpanded="true" />
+        <AssociationConnector Association="FornetDBModel.FK_Personeller_Birimler" ManuallyRouted="false" />
+        <AssociationConnector Association="FornetDBModel.FK_Personeller_YetkiTurler" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="FornetDBModel.Category" Width="1.5" PointX="7.625" PointY="3.625" />
+        <EntityTypeShape EntityType="FornetDBModel.Items" Width="1.5" PointX="7.625" PointY="1" />
+        <EntityTypeShape EntityType="FornetDBModel.Subcategory" Width="1.5" PointX="5.375" PointY="2.25" />
+        <AssociationConnector Association="FornetDBModel.FK_Category_Subcategory" />
+        <AssociationConnector Association="FornetDBModel.FK_Items_Subcategory1" />
+        <EntityTypeShape EntityType="FornetDBModel.Magazalar" Width="1.5" PointX="7.875" PointY="6" />
+        <EntityTypeShape EntityType="FornetDBModel.Markalar" Width="1.5" PointX="5.625" PointY="5.875" />
+        <AssociationConnector Association="FornetDBModel.FK_Magazalar_Markalar" />
+        <EntityTypeShape EntityType="FornetDBModel.ServiceForms" Width="1.5" PointX="11.125" PointY="4.25" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>
